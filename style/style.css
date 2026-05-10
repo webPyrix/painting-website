@@ -91,6 +91,21 @@
 
 
 
+   
+/* menu */
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
    /* navbar */
@@ -126,11 +141,11 @@
        display: flex;
        align-items: center;
        justify-content: space-between;
-       /* background-color: pink; */
        /* position: absolute;
        top: 2px; */
        /* background-color: #d5a749; */
-      background-color: var(--bg-color);
+       background-color: var(--bg-color);
+       /* background-color: pink; */
    
     
        padding: 0px 40px;
@@ -846,30 +861,42 @@ margin-left: 9px;
  
   }
 
-    .pc-card-title h3:hover {
-        position: relative;
-  display: inline-block;
-  transition: color 0.3s ease;
-      
-    }
-
- .pc-card-title h3::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -6px;
-  width: 0%;
-  height: 1.5px;
-  background: var(--logo-color);
-  transition: width 0.4s ease;
-}
-     .pc-card-title h3:hover {
-  color: var(--logo-color);
+.pc-card-title h3 {
+    position: relative;
+    display: inline-block;
+    transition: color 0.3s ease;
 }
 
-.pc-card-title h3:hover::after {
-  width: 100%;
+.pc-card-title h3::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    width: 0%;
+    height: 1.5px;
+    background: var(--logo-color);
+    transition: width 0.4s ease;
 }
+
+.pc-card:hover .pc-card-title h3 {
+    color: var(--logo-color);
+}
+
+.pc-card:hover .pc-card-title h3::after {
+    width: 100%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
   /*
    * FIX 3: Owl Carousel adds the 'center' class to .owl-item (the wrapper),
@@ -1104,7 +1131,8 @@ margin-left: 9px;
 
 
 .blog-section-parent{
- margin: 150px 0px;
+margin-top: 150px;
+margin-bottom: 190px;
 }
 
   .blog{
@@ -1313,12 +1341,7 @@ rgba(0, 0, 0, 0.078) 0px 18px 20px 17px;
 
 
          }
-         .footer p{
-          color: var(--para-color);
-          /* color: var(--heading2-color); */
-  
-
-         }
+   
          /* .footer-qr-parent{
           display: flex;
           flex-direction: column;
@@ -1333,9 +1356,13 @@ rgba(0, 0, 0, 0.078) 0px 18px 20px 17px;
           font-size: 15px;
       
          } */
+
+         .footer-contact h4{
+          margin-top: 1px;
+         }
           .footer-qr-parent h4{
             text-align: center;
-            margin-top: 1px;
+      
             
           }
            .footer-qr{
@@ -1348,10 +1375,7 @@ rgba(0, 0, 0, 0.078) 0px 18px 20px 17px;
           width: 100%;
           object-fit: cover;
          }
-         .footer-manu a{
       
-          color: var(--footer-txt-color);
-         }
          .footer-social-media{
           display: flex;
           gap: 12px;
@@ -1366,9 +1390,7 @@ rgba(0, 0, 0, 0.078) 0px 18px 20px 17px;
           justify-content: center;
           margin-top: 80px;
          }
-         .footer-bottom-txt span{
-          color: var(--light-color);
-         }
+       
      .footer-contact p:nth-child(3){
   margin: 20px 0;
 }

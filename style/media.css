@@ -203,8 +203,11 @@ height: 8%;
                                 }
                                 .footer-qr-parent h4 {
                                     text-align:start;
-                                    margin-top: 0px;
+                             
                                 }
+                                 .footer-contact h4{
+                                  margin-top: 0px;
+                                     }
                                 .footer h4 {
                                     margin-bottom: 15px;
                                     font-size: 22px;
@@ -369,7 +372,8 @@ h1 {
                         margin: 90px 0px;
                     }
                     .blog-section-parent {
-                        margin: 90px 0px;
+                      margin-top: 90px;
+                      margin-bottom: 125px;
                     }
 
      .blog-card{

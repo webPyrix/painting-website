@@ -1,503 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Offcanvas Menu — Painting Restoration</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
-
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --gold: #b8953f;
+    --gold-light: #d4b068;
+    --gold-dim: rgba(184,149,63,0.18);
+    --cream: #f5f0e8;
+    --ink: #1a1610;
+    --ink-mid: #2e2820;
+    --parchment: #ede6d6;
+    --canvas-duration: 0.72s;
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  }
 
   body {
-    background: #f5f0e8;
-    font-family: 'Helvetica Neue', Arial, sans-serif;
-  }
-
-  .pc-root {
-    padding: 0 28px 80px;
-    max-width: 1400px;
-    margin: 0 auto;
-  }
-
-  /* ── Header ── */
-  .pc-header {
-    background: #7e5b13;
-    border-radius: 50px;
-    padding: 60px 48px 68px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-    margin-bottom: 60px;
-  }
-  .pc-header::before {
-    content: '';
-    position: absolute;
-    top: -60px; right: -60px;
-    width: 260px; height: 260px;
-    border-radius: 50%;
-    border: 1px solid rgba(245,233,208,.08);
-    pointer-events: none;
-  }
-  .pc-eyebrow {
-    font-size: 10px;
-    letter-spacing: 5px;
-    text-transform: uppercase;
-    color: rgba(245,233,208,.4);
-    margin-bottom: 14px;
-  }
-  .pc-heading {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 52px;
-    font-weight: 300;
-    font-style: italic;
-    color: #f5e9d0;
-    margin-bottom: 10px;
-  }
-  .pc-subheading {
-    font-size: 11px;
-    letter-spacing: 1px;
-    color: rgba(245,233,208,.45);
-  }
-
-  /* ── Carousel Wrapper ── */
-  .pc-owl-wrap {
-    padding: 40px 0 40px;
-    overflow: visible;
-  }
-
-  /*
-   * FIX 1: Do NOT set overflow:visible on .owl-stage-outer
-   * Owl Carousel needs overflow:hidden here to correctly measure,
-   * clone items, and loop. Removing the override restores looping.
-   * Add vertical padding instead so the scaled center card is not clipped.
-   */
-  .owl-carousel .owl-stage-outer {
-    overflow: hidden !important;
-    padding: 20px 0 !important;
-  }
-
-  /* ── Card ── */
-  .pc-card {
-    background: #fff;
-    border: 1px solid #ede8df;
-    border-radius: 6px;
-    overflow: hidden;
-    transition: transform 0.45s cubic-bezier(0.4,0,0.2,1),
-                box-shadow 0.45s ease,
-                opacity 0.45s ease;
-    /*
-     * FIX 2: transform-origin was 'left center' — this caused cards to
-     * scale outward from their left edge instead of their own centre.
-     * Changed to 'center center' for symmetrical scaling.
-     */
-    transform-origin: center center;
-    cursor: pointer;
-  }
-
-  .pc-card:hover{
-    transform: scale(1.02);
-  }
-
-  /*
-   * FIX 3: Owl Carousel adds the 'center' class to .owl-item (the wrapper),
-   * not to .pc-card directly. Selector must be .owl-item.center .pc-card
-   */
-  .owl-item.center .pc-card {
-    transform: scale(1.06);
-    opacity: 1;
-    box-shadow: 0 20px 60px rgba(126,91,19,0.18), 0 4px 16px rgba(0,0,0,0.10);
-  }
-
-  .pc-card-img {
-    width: 100%;
-    height: 300px;
-    overflow: hidden;
-    position: relative;
-  }
-  .pc-card-img img,
-  .pc-card-img svg {
-    width: 100%;
-    height: 100%;
-    display: block;
-    object-fit: cover;
-    transition: transform 0.7s cubic-bezier(0.4,0,0.2,1);
-  }
-  .owl-item.center .pc-card .pc-card-img img,
-  .owl-item.center .pc-card .pc-card-img svg {
-    transform: scale(1.04);
-  }
-
-  /* Gold top bar */
-  .pc-gold-bar {
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, #c9a050, #7e5b13, #c9a050, transparent);
-    z-index: 3;
-  }
-
-  /* Hover overlay */
-  .pc-card-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(20,14,6,.55) 0%, transparent 55%);
-    opacity: 0;
-    transition: opacity 0.4s;
-    display: flex;
-    align-items: flex-end;
-    padding: 16px;
-    z-index: 2;
-  }
-  .pc-card:hover .pc-card-overlay {
-    opacity: 1;
-  }
-  .pc-overlay-link {
-    font-size: 9px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: #f5e9d0;
-    border-bottom: 1px solid rgba(245,233,208,.4);
-    padding-bottom: 2px;
-  }
-
-  /* Card body */
-  .pc-card-body {
-    padding: 16px 18px 20px;
-    border-top: 1px solid #f0ebe2;
-    position: relative;
-    min-height: 110px;
-  }
-  .pc-card-tag {
-    font-size: 8px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: #7e5b13;
-    margin-bottom: 4px;
-  }
-  .pc-card-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 19px;
-    font-weight: 300;
-    font-style: italic;
-    color: #1a1410;
-    line-height: 1.25;
-    margin-bottom: 7px;
-  }
-  .pc-card-desc {
-    font-size: 10px;
-    color: #9a8f80;
-    letter-spacing: 0.4px;
-    line-height: 1.65;
-  }
-  .pc-card-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 30px;
-    font-weight: 300;
-    color: rgba(126,91,19,.15);
-    position: absolute;
-    bottom: 10px;
-    right: 14px;
-    line-height: 1;
-  }
-
-  /* ── Controls ── */
-  .pc-controls {
+    font-family: 'Jost', sans-serif;
+    background: #1a1610;
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 24px;
-    margin-top: 20px;
-  }
-  .pc-btn {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    background: transparent;
-    border: 1px solid #d6cfc3;
-    color: #2a2018;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.2s, border-color 0.2s, transform 0.15s;
-    flex-shrink: 0;
-  }
-  .pc-btn:hover {
-    background: #f5f0e8;
-    border-color: #b5a990;
-  }
-  .pc-btn:active { transform: scale(0.93); }
-  .pc-btn svg {
-    width: 16px;
-    height: 16px;
+    overflow-x: hidden;
   }
 
-  .pc-dots {
+  /* ── DEMO TRIGGER AREA ── */
+  .demo-bar {
     display: flex;
-    gap: 8px;
     align-items: center;
-  }
-  .pc-dot {
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: #d6cfc3;
-    cursor: pointer;
-    transition: background 0.3s, transform 0.3s;
-    border: none;
-    padding: 0;
-  }
-  .pc-dot.active {
-    background: #7e5b13;
-    transform: scale(1.6);
+    gap: 2rem;
+    padding: 1.2rem 2rem;
+    background: rgba(255,255,255,0.04);
+    border: 0.5px solid rgba(184,149,63,0.25);
+    border-radius: 4px;
+    color: var(--cream);
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
 
-  /* ── Footer bar ── */
-  .pc-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 36px;
-    padding-top: 20px;
-    border-top: 1px solid #e0d8cc;
-  }
-  .pc-footer-count {
-    font-size: 10px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: #bbb0a0;
-  }
-  .pc-footer-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 10px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: #7e5b13;
+  /* ── HAMBURGER BUTTON ── */
+  .menu-toggle {
     background: none;
     border: none;
-    border-bottom: 1px solid rgba(126,91,19,.3);
-    padding-bottom: 2px;
     cursor: pointer;
-    transition: color 0.2s, border-color 0.2s;
-  }
-  .pc-footer-cta:hover {
-    color: #5a3e0a;
-    border-color: #7e5b13;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    position: relative;
+    z-index: 1100;
   }
 
-  /* Hide default owl nav/dots */
-  .owl-nav, .owl-dots { display: none !important; }
+  .menu-toggle span {
+    display: block;
+    width: 28px;
+    height: 1.5px;
+    background: var(--gold);
+    transition: transform 0.45s var(--ease-out-expo), opacity 0.3s ease, width 0.4s var(--ease-out-expo);
+    transform-origin: center;
+  }
+
+  .menu-toggle span:nth-child(2) { width: 20px; }
+
+  .menu-toggle.is-open span:nth-child(1) {
+    transform: translateY(6.5px) rotate(45deg);
+    width: 28px;
+  }
+
+  .menu-toggle.is-open span:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+
+  .menu-toggle.is-open span:nth-child(3) {
+    transform: translateY(-6.5px) rotate(-45deg);
+    width: 28px;
+  }
+
+  /* ── OVERLAY ── */
+  .offcanvas-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 8, 5, 0.65);
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+    backdrop-filter: blur(2px);
+  }
+
+  .offcanvas-overlay.is-open {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /* ── OFFCANVAS PANEL ── */
+  .offcanvas {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: min(480px, 100vw);
+    height: 100vh;
+    background: var(--ink);
+    z-index: 1050;
+    overflow: hidden;
+    transform: translateX(100%);
+    transition: transform var(--canvas-duration) var(--ease-out-expo);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .offcanvas.is-open {
+    transform: translateX(0);
+  }
+
+  /* ── BACKGROUND LOGO (blurred, full-height) ── */
+  .offcanvas-bg-logo {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .offcanvas-bg-logo svg {
+    width: 110%;
+    height: 110%;
+    opacity: 0.055;
+    filter: blur(3px) sepia(1);
+    transform: scale(1.05);
+    object-fit: cover;
+  }
+
+  /* ── THIN GOLD BORDER LEFT ── */
+  .offcanvas::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, var(--gold) 20%, var(--gold) 80%, transparent);
+    z-index: 10;
+    opacity: 0;
+    transform: scaleY(0);
+    transition: opacity 0.4s ease 0.3s, transform 0.6s var(--ease-out-expo) 0.25s;
+    transform-origin: center;
+  }
+
+  .offcanvas.is-open::before {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+
+  /* ── INNER CONTENT ── */
+  .offcanvas-inner {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 2.5rem 3rem;
+  }
+
+  /* ── CLOSE BUTTON ── */
+  .offcanvas-close {
+    align-self: flex-end;
+    background: none;
+    border: 0.5px solid rgba(184,149,63,0.35);
+    color: var(--gold);
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.25s, border-color 0.25s, transform 0.3s;
+    flex-shrink: 0;
+  }
+
+  .offcanvas-close:hover {
+    background: var(--gold-dim);
+    border-color: var(--gold);
+    transform: rotate(90deg);
+  }
+
+  /* ── DIVIDER ── */
+  .offcanvas-divider {
+    height: 0.5px;
+    background: linear-gradient(to right, transparent, var(--gold-light), transparent);
+    margin: 1.4rem 0;
+    opacity: 0;
+    transform: scaleX(0);
+    transition: opacity 0.5s ease, transform 0.6s var(--ease-out-expo);
+    transform-origin: left;
+  }
+
+  .offcanvas.is-open .offcanvas-divider {
+    opacity: 1;
+    transform: scaleX(1);
+    transition-delay: 0.35s;
+  }
+
+  /* ── NAV LINKS ── */
+  .offcanvas-nav {
+    list-style: none;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.15rem;
+  }
+
+  .offcanvas-nav li {
+    overflow: hidden;
+  }
+
+  .offcanvas-nav a {
+    display: flex;
+    align-items: baseline;
+    gap: 0.9rem;
+    text-decoration: none;
+    color: var(--cream);
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(1.7rem, 3.5vw, 2.1rem);
+    letter-spacing: 0.04em;
+    padding: 0.45rem 0;
+    position: relative;
+    transform: translateY(60px);
+    opacity: 0;
+    transition: color 0.3s ease, transform 0.55s var(--ease-out-expo), opacity 0.45s ease;
+    white-space: nowrap;
+  }
+
+  .offcanvas-nav a .nav-num {
+    font-family: 'Jost', sans-serif;
+    font-weight: 200;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    opacity: 0.7;
+    margin-top: 0.15em;
+    flex-shrink: 0;
+    align-self: center;
+  }
+
+  .offcanvas-nav a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 0.5px;
+    background: var(--gold-light);
+    transition: width 0.4s var(--ease-out-expo);
+  }
+
+  .offcanvas-nav a:hover {
+    color: var(--gold-light);
+  }
+
+  .offcanvas-nav a:hover::after {
+    width: 100%;
+  }
+
+  /* Staggered animation */
+  .offcanvas.is-open .offcanvas-nav a {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  .offcanvas.is-open .offcanvas-nav li:nth-child(1) a { transition-delay: 0.22s; }
+  .offcanvas.is-open .offcanvas-nav li:nth-child(2) a { transition-delay: 0.28s; }
+  .offcanvas.is-open .offcanvas-nav li:nth-child(3) a { transition-delay: 0.34s; }
+  .offcanvas.is-open .offcanvas-nav li:nth-child(4) a { transition-delay: 0.40s; }
+  .offcanvas.is-open .offcanvas-nav li:nth-child(5) a { transition-delay: 0.46s; }
+  .offcanvas.is-open .offcanvas-nav li:nth-child(6) a { transition-delay: 0.52s; }
+  .offcanvas.is-open .offcanvas-nav li:nth-child(7) a { transition-delay: 0.58s; }
+
+  /* ── FOOTER ── */
+  .offcanvas-footer {
+    border-top: 0.5px solid rgba(184,149,63,0.2);
+    padding-top: 1.4rem;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease 0.7s, transform 0.5s var(--ease-out-expo) 0.7s;
+  }
+
+  .offcanvas.is-open .offcanvas-footer {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .footer-address {
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: 12px;
+    color: rgba(245,240,232,0.45);
+    letter-spacing: 0.06em;
+    line-height: 1.9;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .footer-supported {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .footer-supported-label {
+    font-family: 'Jost', sans-serif;
+    font-weight: 200;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.3);
+  }
+
+  .footer-supported-name {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    color: var(--gold);
+    text-transform: uppercase;
+    border: 0.5px solid rgba(184,149,63,0.4);
+    padding: 3px 10px;
+    border-radius: 2px;
+  }
+
+  /* ── NOTE AT TOP ── */
+  .offcanvas-eyebrow {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    text-transform: uppercase;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.45s ease 0.18s, transform 0.45s var(--ease-out-expo) 0.18s;
+    margin-bottom: 0.4rem;
+  }
+
+  .offcanvas.is-open .offcanvas-eyebrow {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── MEDIA QUERY: show hamburger at 992px ── */
+  @media (max-width: 992px) {
+    .menu-toggle { display: flex; }
+  }
+
+  @media (min-width: 993px) {
+    .menu-toggle { display: none; }
+    .offcanvas-overlay, .offcanvas { display: none; }
+  }
+
+  /* Demo label */
+  .demo-note {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: rgba(245,240,232,0.35);
+    text-transform: uppercase;
+  }
 </style>
+</head>
+<body>
 
+<!-- DEMO TRIGGER BAR -->
+<div class="demo-bar">
+  <button class="menu-toggle" id="menuToggle" aria-label="Open navigation menu" aria-expanded="false">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+  <span class="demo-note">Click the menu icon (activates at ≤992px)</span>
+</div>
 
-<div class="pc-root">
+<!-- OVERLAY -->
+<div class="offcanvas-overlay" id="offcanvasOverlay" aria-hidden="true"></div>
 
-  <!-- Header -->
-  <div class="pc-header">
-    <p class="pc-eyebrow">Portfolio of Work</p>
-    <h2 class="pc-heading">Our Projects</h2>
-    <p class="pc-subheading">Every painting tells a story — we bring that story back to life</p>
+<!-- OFFCANVAS PANEL -->
+<nav class="offcanvas" id="offcanvas" aria-label="Site navigation" aria-hidden="true">
+
+  <!-- Full-height blurred logo background -->
+  <div class="offcanvas-bg-logo" aria-hidden="true">
+    <!-- Ornate painting restoration emblem SVG -->
+    <svg viewBox="0 0 400 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g opacity="1">
+        <!-- Outer ornate frame -->
+        <ellipse cx="200" cy="300" rx="170" ry="250" stroke="#b8953f" stroke-width="1.5" fill="none"/>
+        <ellipse cx="200" cy="300" rx="155" ry="235" stroke="#b8953f" stroke-width="0.5" fill="none"/>
+        <!-- Corner flourishes top -->
+        <path d="M80 80 Q120 60 160 80 Q140 100 120 90 Q100 110 80 80Z" fill="#b8953f"/>
+        <path d="M320 80 Q280 60 240 80 Q260 100 280 90 Q300 110 320 80Z" fill="#b8953f"/>
+        <!-- Corner flourishes bottom -->
+        <path d="M80 520 Q120 540 160 520 Q140 500 120 510 Q100 490 80 520Z" fill="#b8953f"/>
+        <path d="M320 520 Q280 540 240 520 Q260 500 280 510 Q300 490 320 520Z" fill="#b8953f"/>
+        <!-- Central brush motif -->
+        <rect x="195" y="140" width="10" height="160" rx="5" fill="#b8953f"/>
+        <ellipse cx="200" cy="135" rx="12" ry="20" fill="#b8953f"/>
+        <!-- Palette circle -->
+        <circle cx="200" cy="370" r="55" stroke="#b8953f" stroke-width="1" fill="none"/>
+        <circle cx="200" cy="370" r="35" stroke="#b8953f" stroke-width="0.5" fill="none"/>
+        <!-- Paint dots on palette -->
+        <circle cx="178" cy="358" r="6" fill="#b8953f" opacity="0.6"/>
+        <circle cx="222" cy="358" r="6" fill="#b8953f" opacity="0.6"/>
+        <circle cx="190" cy="380" r="6" fill="#b8953f" opacity="0.6"/>
+        <circle cx="210" cy="380" r="5" fill="#b8953f" opacity="0.6"/>
+        <circle cx="200" cy="358" r="4" fill="#b8953f" opacity="0.8"/>
+        <!-- Horizontal ornament lines -->
+        <line x1="60" y1="300" x2="140" y2="300" stroke="#b8953f" stroke-width="0.75"/>
+        <line x1="260" y1="300" x2="340" y2="300" stroke="#b8953f" stroke-width="0.75"/>
+        <circle cx="150" cy="300" r="4" fill="#b8953f"/>
+        <circle cx="250" cy="300" r="4" fill="#b8953f"/>
+        <!-- Text arch -->
+        <path id="archPath" d="M 120 230 A 90 90 0 0 1 280 230" fill="none"/>
+        <text font-family="serif" font-size="13" letter-spacing="6" fill="#b8953f">
+          <textPath href="#archPath" startOffset="10%">RESTORATION · ART ·</textPath>
+        </text>
+      </g>
+    </svg>
   </div>
 
-  <!-- Carousel -->
-  <div class="pc-owl-wrap">
-    <div class="owl-carousel owl-theme" id="pc-owl">
+  <!-- Content -->
+  <div class="offcanvas-inner">
+    <!-- Close button -->
+    <button class="offcanvas-close" id="offcanvasClose" aria-label="Close navigation menu">&#x2715;</button>
 
-      <div class="item">
-        <div class="pc-card">
-          <div class="pc-card-img">
-            <div class="pc-gold-bar"></div>
-            <img src="./images/photos/0U5A5305.webp" alt="Portrait of a Noblewoman"
-                 onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-            <svg style="display:none" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-              <rect width="400" height="300" fill="#c9a87c"/>
-              <ellipse cx="200" cy="120" rx="180" ry="120" fill="#8a6240" opacity=".62"/>
-              <ellipse cx="260" cy="200" rx="130" ry="100" fill="#5c3d1e" opacity=".55"/>
-              <rect x="0" y="210" width="400" height="90" fill="#3a2810" opacity=".78"/>
-              <ellipse cx="100" cy="80" rx="90" ry="70" fill="#e8d4a8" opacity=".48"/>
-            </svg>
-            <div class="pc-card-overlay"><span class="pc-overlay-link">View work</span></div>
-          </div>
-          <div class="pc-card-body">
-            <div class="pc-card-tag">Oil on Canvas</div>
-            <div class="pc-card-title">Portrait of a Noblewoman</div>
-            <div class="pc-card-desc">18th century, attributed to the Venetian school. Full conservation &amp; revarnishing.</div>
-            <div class="pc-card-num">01</div>
-          </div>
-        </div>
+    <!-- Eyebrow label -->
+    <p class="offcanvas-eyebrow">Navigation</p>
+
+    <!-- Gold divider -->
+    <div class="offcanvas-divider"></div>
+
+    <!-- Nav links -->
+    <ul class="offcanvas-nav" role="list">
+      <li><a href="#"><span class="nav-num">01</span>Home</a></li>
+      <li><a href="#"><span class="nav-num">02</span>About</a></li>
+      <li><a href="#"><span class="nav-num">03</span>Services</a></li>
+      <li><a href="#"><span class="nav-num">04</span>Projects</a></li>
+      <li><a href="#"><span class="nav-num">05</span>Media &amp; Publications</a></li>
+      <li><a href="#"><span class="nav-num">06</span>Blogs</a></li>
+      <li><a href="#"><span class="nav-num">07</span>Contact</a></li>
+    </ul>
+
+    <!-- Footer -->
+    <footer class="offcanvas-footer">
+      <address class="footer-address" style="font-style: normal;">
+        Studio 14, Heritage Arts Complex<br>
+        Regal Building, M.G. Road<br>
+        Mumbai – 400 001, India
+      </address>
+      <div class="footer-supported">
+        <span class="footer-supported-label">Supported by</span>
+        <span class="footer-supported-name">Tata Trusts</span>
       </div>
-
-      <div class="item">
-        <div class="pc-card">
-          <div class="pc-card-img">
-            <div class="pc-gold-bar"></div>
-            <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-              <rect width="400" height="300" fill="#2d5e8a"/>
-              <ellipse cx="200" cy="120" rx="180" ry="120" fill="#1a3a5c" opacity=".62"/>
-              <ellipse cx="260" cy="200" rx="130" ry="100" fill="#8b4513" opacity=".55"/>
-              <rect x="0" y="210" width="400" height="90" fill="#4a7a4a" opacity=".78"/>
-              <ellipse cx="100" cy="80" rx="90" ry="70" fill="#d4af37" opacity=".48"/>
-            </svg>
-            <div class="pc-card-overlay"><span class="pc-overlay-link">View work</span></div>
-          </div>
-          <div class="pc-card-body">
-            <div class="pc-card-tag">Fresco Panel</div>
-            <div class="pc-card-title">Madonna con Bambino</div>
-            <div class="pc-card-desc">15th century devotional panel, tempera and gold leaf. Cleaned and stabilised.</div>
-            <div class="pc-card-num">02</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="item">
-        <div class="pc-card">
-          <div class="pc-card-img">
-            <div class="pc-gold-bar"></div>
-            <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-              <rect width="400" height="300" fill="#2e4a62"/>
-              <ellipse cx="200" cy="120" rx="180" ry="120" fill="#5c7a8a" opacity=".62"/>
-              <ellipse cx="260" cy="200" rx="130" ry="100" fill="#8ba8b8" opacity=".55"/>
-              <rect x="0" y="210" width="400" height="90" fill="#1c2b3a" opacity=".78"/>
-              <ellipse cx="100" cy="80" rx="90" ry="70" fill="#3d3022" opacity=".48"/>
-            </svg>
-            <div class="pc-card-overlay"><span class="pc-overlay-link">View work</span></div>
-          </div>
-          <div class="pc-card-body">
-            <div class="pc-card-tag">Oil on Panel</div>
-            <div class="pc-card-title">Storm Over the Harbour</div>
-            <div class="pc-card-desc">Dutch Golden Age seascape. Crack repair, inpainting and surface consolidation.</div>
-            <div class="pc-card-num">03</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="item">
-        <div class="pc-card">
-          <div class="pc-card-img">
-            <div class="pc-gold-bar"></div>
-            <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-              <rect width="400" height="300" fill="#4a7a4a"/>
-              <ellipse cx="200" cy="120" rx="180" ry="120" fill="#6dab5e" opacity=".62"/>
-              <ellipse cx="260" cy="200" rx="130" ry="100" fill="#e8a040" opacity=".55"/>
-              <rect x="0" y="210" width="400" height="90" fill="#5c8a9a" opacity=".78"/>
-              <ellipse cx="100" cy="80" rx="90" ry="70" fill="#d4b8c0" opacity=".48"/>
-            </svg>
-            <div class="pc-card-overlay"><span class="pc-overlay-link">View work</span></div>
-          </div>
-          <div class="pc-card-body">
-            <div class="pc-card-tag">Watercolour</div>
-            <div class="pc-card-title">Garden at Giverny</div>
-            <div class="pc-card-desc">Impressionist work on paper. De-acidification and mount conservation.</div>
-            <div class="pc-card-num">04</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="item">
-        <div class="pc-card">
-          <div class="pc-card-img">
-            <div class="pc-gold-bar"></div>
-            <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-              <rect width="400" height="300" fill="#c4a020"/>
-              <ellipse cx="200" cy="120" rx="180" ry="120" fill="#8b6914" opacity=".62"/>
-              <ellipse cx="260" cy="200" rx="130" ry="100" fill="#2d5e8a" opacity=".55"/>
-              <rect x="0" y="210" width="400" height="90" fill="#8a3a10" opacity=".78"/>
-              <ellipse cx="100" cy="80" rx="90" ry="70" fill="#1a3a5c" opacity=".48"/>
-            </svg>
-            <div class="pc-card-overlay"><span class="pc-overlay-link">View work</span></div>
-          </div>
-          <div class="pc-card-body">
-            <div class="pc-card-tag">Tempera on Wood</div>
-            <div class="pc-card-title">The Annunciation</div>
-            <div class="pc-card-desc">Early Renaissance altarpiece fragment. Extensive flaking stabilised and retouched.</div>
-            <div class="pc-card-num">05</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="item">
-        <div class="pc-card">
-          <div class="pc-card-img">
-            <div class="pc-gold-bar"></div>
-            <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-              <rect width="400" height="300" fill="#9b6040"/>
-              <ellipse cx="200" cy="120" rx="180" ry="120" fill="#6b3820" opacity=".62"/>
-              <ellipse cx="260" cy="200" rx="130" ry="100" fill="#c89870" opacity=".55"/>
-              <rect x="0" y="210" width="400" height="90" fill="#2a1808" opacity=".78"/>
-              <ellipse cx="100" cy="80" rx="90" ry="70" fill="#d4a870" opacity=".48"/>
-            </svg>
-            <div class="pc-card-overlay"><span class="pc-overlay-link">View work</span></div>
-          </div>
-          <div class="pc-card-body">
-            <div class="pc-card-tag">Oil on Canvas</div>
-            <div class="pc-card-title">Self-Portrait with Palette</div>
-            <div class="pc-card-desc">19th century academic work. Lining, structural treatment and tonal restoration.</div>
-            <div class="pc-card-num">06</div>
-          </div>
-        </div>
-      </div>
-
-    </div><!-- /.owl-carousel -->
+    </footer>
   </div>
-
-  <!-- Controls -->
-  <div class="pc-controls">
-    <button class="pc-btn" id="pc-prev" aria-label="Previous project">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-        <path d="M10 3L5 8l5 5"/>
-      </svg>
-    </button>
-    <button class="pc-btn" id="pc-next" aria-label="Next project">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-        <path d="M6 3l5 5-5 5"/>
-      </svg>
-    </button>
-  </div>
-
-  <!-- Footer -->
-  <div class="pc-footer">
-    <span class="pc-footer-count" id="pc-footer-count">01 / 06</span>
-    <button class="pc-footer-cta">View all projects &nbsp;→</button>
-  </div>
-
-</div><!-- /.pc-root -->
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+</nav>
 
 <script>
-$(document).ready(function () {
+  const toggle    = document.getElementById('menuToggle');
+  const overlay   = document.getElementById('offcanvasOverlay');
+  const offcanvas = document.getElementById('offcanvas');
+  const closeBtn  = document.getElementById('offcanvasClose');
 
-  const $owl = $('#pc-owl');
+  function openMenu() {
+    offcanvas.classList.add('is-open');
+    overlay.classList.add('is-open');
+    toggle.classList.add('is-open');
+    offcanvas.setAttribute('aria-hidden', 'false');
+    overlay.setAttribute('aria-hidden', 'false');
+    toggle.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
 
-  /* INIT - SIMPLE */
-  $owl.owlCarousel({
-    items: 3,
-    margin: 24,
-    loop: false,      
-    center: true, 
-    nav: false,
-    dots: false,
-    smartSpeed: 500,
-    items:2,
-    responsive: {
-      0: { items: 1 },
-      600: { items: 2 },
-      1000: { items: 3 }
-    }
+  function closeMenu() {
+    offcanvas.classList.remove('is-open');
+    overlay.classList.remove('is-open');
+    toggle.classList.remove('is-open');
+    offcanvas.setAttribute('aria-hidden', 'true');
+    overlay.setAttribute('aria-hidden', 'true');
+    toggle.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+
+  toggle.addEventListener('click', () => {
+    offcanvas.classList.contains('is-open') ? closeMenu() : openMenu();
   });
 
-  /* NEXT / PREV */
-  $('#pc-next').on('click', function () {
-    $owl.trigger('next.owl.carousel');
+  overlay.addEventListener('click', closeMenu);
+  closeBtn.addEventListener('click', closeMenu);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && offcanvas.classList.contains('is-open')) closeMenu();
   });
 
-  $('#pc-prev').on('click', function () {
-    $owl.trigger('prev.owl.carousel');
+  // Nav links — close on click (for SPA-style)
+  offcanvas.querySelectorAll('.offcanvas-nav a').forEach(link => {
+    link.addEventListener('click', closeMenu);
   });
-
-
-
-
-});
 </script>
+</body>
+</html>
