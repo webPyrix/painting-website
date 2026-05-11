@@ -85,6 +85,51 @@ $(document).ready(function () {
 
 
 
+  const toggle    = document.getElementById('menuToggle');
+  const overlay   = document.getElementById('offcanvasOverlay');
+  const offcanvas = document.getElementById('offcanvas');
+
+
+  function openMenu() {
+    offcanvas.classList.add('is-open');
+    overlay.classList.add('is-open');
+    toggle.classList.add('is-open');
+    offcanvas.setAttribute('aria-hidden', 'false');
+    overlay.setAttribute('aria-hidden', 'false');
+    toggle.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeMenu() {
+    offcanvas.classList.remove('is-open');
+    overlay.classList.remove('is-open');
+    toggle.classList.remove('is-open');
+    offcanvas.setAttribute('aria-hidden', 'true');
+    overlay.setAttribute('aria-hidden', 'true');
+    toggle.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+
+  toggle.addEventListener('click', () => {
+    offcanvas.classList.contains('is-open') ? closeMenu() : openMenu();
+  });
+
+  overlay.addEventListener('click', closeMenu);
+
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && offcanvas.classList.contains('is-open')) closeMenu();
+  });
+
+  // Nav links — close on click (for SPA-style)
+  offcanvas.querySelectorAll('.offcanvas-nav a').forEach(link => {
+    link.addEventListener('click', closeMenu);
+  });
+
+
+
+
+
 
 
 
