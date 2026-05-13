@@ -30,12 +30,84 @@
 
 
 
-    <!-- navbar -->
+   <!-- manu  -->
 
+
+
+  <!-- OVERLAY -->
+<div class="offcanvas-overlay" id="offcanvasOverlay" aria-hidden="true"></div>
+
+<!-- OFFCANVAS PANEL -->
+<nav class="offcanvas" id="offcanvas" aria-label="Site navigation" aria-hidden="true">
+
+  <!-- Full-height blurred logo background -->
+  <div class="offcanvas-bg-logo" aria-hidden="true">
+    <!-- Ornate painting restoration emblem SVG -->
+     <img src="./images/logo.png" alt="">
+
+  </div>
+
+  <!-- Content -->
+  <div class="offcanvas-inner">
+    <!-- Close button -->
+
+
+    <!-- Eyebrow label -->
+    <p class="offcanvas-eyebrow">Navigation</p>
+
+    <!-- Gold divider -->
+    <div class="offcanvas-divider"></div>
+
+    <!-- Nav links -->
+    <ul class="offcanvas-nav" role="list">
+      <li><a href="./index.html"><span class="nav-num">01</span>Home</a></li>
+      <li><a href="./about.html"><span class="nav-num">02</span>About</a></li>
+      <li><a href="#"><span class="nav-num">03</span>Services</a></li>
+      <li><a href="#"><span class="nav-num">04</span>Projects</a></li>
+      <li><a href="#"><span class="nav-num">05</span>Media &amp; Publications</a></li>
+      <li><a href="#"><span class="nav-num">06</span>Blogs</a></li>
+      <li><a href="#"><span class="nav-num">07</span>Contact</a></li>
+    </ul>
+
+    <!-- Footer -->
+    <footer class="offcanvas-footer">
+      <address class="footer-address" style="font-style: normal;">
+        Studio 14, Heritage Arts Complex<br>
+        Regal Building, M.G. Road<br>
+        Mumbai – 400 001, India
+      </address>
+      <div class="footer-supported">
+        <span class="footer-supported-label">Supported by</span>
+        <span class="footer-supported-name">Tata Trusts</span>
+      </div>
+    </footer>
+  </div>
+</nav>
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  <!-- navbar -->
+
+  <div class="bg-img">
 
  
 
-       <nav class="navbar">
+
+
+
+
+   <nav class="navbar">
         <div class="nav-left">
           <div class="nav-logo">
            <a href="./index.html"> <img src="./images/logo2.png" alt=""></a>
@@ -45,8 +117,8 @@
         </div>
         <div class="nav-mid">
           <ul>
-            <li><a href=""  class="active">Home</a></li>
-            <li><a href="">About</a></li>
+            <li><a href="./index.html"  class="active">Home</a></li>
+            <li><a href="./about.html">About</a></li>
             <li><a href="">Services</a></li>
             <li><a href="">Projects</a></li>
             <li><a href="">Media & Publications</a></li>
@@ -64,18 +136,22 @@
             <h4>Supported By </h4>
             <img src="./images/tata.png" alt="">
           </div>
-          <div class="menu-bar"><img src="./images/menu (1).png" alt=""></div>
+          <div class="menu-bar">
+             <button class="menu-toggle" id="menuToggle" aria-label="Open navigation menu" aria-expanded="false">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+          </div>
         </div>
         </nav>
 
-
-           
-        <style>
-               .navbar {
-               padding-top: 5px;
-                padding-bottom: 5px;
-               }
-        </style>
+        <!-- <style>
+          .navbar{
+            padding-top: 5px;
+            padding-bottom: 5px;
+          }
+        </style> -->
 
 
 
@@ -85,9 +161,6 @@
 
 
         <!-- hero section -->
-
-
-
 
 
         <header class="hero">
@@ -297,10 +370,10 @@
 
 
 
-   <section class="break">
-    <div class="break-img">
+   <!-- <section class="break"> -->
+    <!-- <div class="break-img">
       <img src="./images/Photos/0U5A6670.webp" alt="">
-    </div>
+    </div> -->
 
 
     <div class="padding">
@@ -334,7 +407,7 @@
     </div>
     </div>
     </div>
-  </section>
+  <!-- </section> -->
 
    
 
@@ -351,9 +424,9 @@
   padding-bottom: 200px;
 } */
 
-.break-img{
+/* .break-img{
   height: 70vh;
-}
+} */
 
 .break-img img{
   width: 100%;
@@ -365,21 +438,21 @@
   display: flex;
   justify-content: center;
 
-  margin-top: -150px;
+  /* margin-top: -150px;
   position: relative;
-  z-index: 2;
+  z-index: 2; */
 }
 
 .ceo{
   /* width: min(1100px, 90%); */
-  width: 90%;
+  width: 100%;
   background: var(--card-color);
   display: flex;
-  overflow: hidden;
+  /* overflow: hidden; */
 
 
-  box-shadow:
-  0 10px 30px rgba(0,0,0,0.08);
+  /* box-shadow:
+  0 10px 30px rgba(0,0,0,0.08); */
 }
 
 .ceo-left{
@@ -409,6 +482,11 @@
 }
 
 </style>
+
+
+
+
+
 
 
 
@@ -608,7 +686,9 @@ Meet the heart of our studio
   width: 100%;
   position: relative;
   overflow: hidden;
-  margin: 150px 0px;
+  margin-top: 150px;
+  margin-bottom: 190px;
+
 }
 
 /* big decorative bg text */
@@ -690,7 +770,7 @@ Meet the heart of our studio
 
 .carousel-viewport {
   overflow: hidden;
-  padding: 0px 0 72px;
+padding: 72px 0px;
 }
 
 .carousel-track {
@@ -721,17 +801,18 @@ Meet the heart of our studio
 
 /* odd → normal, even → shifted down */
 
-.team-card:nth-child(even) {
+/* .team-card:nth-child(even) {
   margin-top: 52px;
-}
+} */
 
-.team-card:nth-child(odd) {
+/* .team-card:nth-child(odd) {
   margin-bottom: 52px;
-}
+} */
 
 .team-card:hover {
   transform: translateY(-10px) scale(1.02);
-  box-shadow: 0 30px 70px rgba(0,0,0,0.6);
+  /* box-shadow: 0 30px 70px rgba(0,0,0,0.6); */
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.10), 0 6px 12px rgba(0, 0, 0, 0);
 }
 
 /* photo layer */
@@ -806,7 +887,7 @@ Meet the heart of our studio
 
 .card-name {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 32px;
+  font-size: 30px;
   letter-spacing: 0.04em;
   line-height: 1;
   color: var(--heading2-color);
@@ -816,7 +897,7 @@ Meet the heart of our studio
 .card-bio {
   font-size: 12px;
   line-height: 1.65;
-  color: rgba(255,255,255,0.45);
+  color: rgba(255, 255, 255, 0.618);
   font-weight: 300;
 }
 
@@ -841,18 +922,21 @@ Meet the heart of our studio
 }
 
 .team-card[data-accent="lime"] .card-socials a:hover {
-  border-color: var(--accent1);
-  background: rgba(200,240,74,0.12);
+  border-color: var(--logo-color);
+  /* background: rgba(200,240,74,0.12); */
+
 }
 
 .team-card[data-accent="coral"] .card-socials a:hover {
-  border-color: var(--accent2);
-  background: rgba(255,92,58,0.12);
+  /* border-color: var(--accent2); */
+  /* background: rgba(255,92,58,0.12); */
+    border-color: var(--logo-color);
 }
 
 .team-card[data-accent="ice"] .card-socials a:hover {
-  border-color: var(--accent3);
-  background: rgba(91,231,255,0.12);
+  /* border-color: var(--accent3); */
+  /* background: rgba(91,231,255,0.12); */
+    border-color: var(--logo-color);
 }
 
 .card-socials svg {
@@ -936,53 +1020,14 @@ Meet the heart of our studio
   width: 22px;
   background: var(--accent1);
 }
-
-/* ═══════════════════════════
-   RESPONSIVE
-═══════════════════════════ */
-
-@media (max-width: 1024px) {
-
-  .team-card {
-    flex: 0 0 270px;
-    width: 270px;
-  }
-
+.team-section .all-heading {
+  margin-bottom: 0px;
 }
 
-@media (max-width: 720px) {
 
-  .team-card {
-    flex: 0 0 260px;
-    width: 260px;
-    height: 380px;
-  }
 
-  .team-card:nth-child(even) {
-    margin-top: 36px;
-  }
 
-  .team-card:nth-child(odd) {
-    margin-bottom: 36px;
-  }
 
-  .carousel-track {
-    padding: 0 28px;
-  }
-}
-
-@media (max-width: 480px) {
-
-  .team-card {
-    flex: 0 0 230px;
-    width: 230px;
-    height: 340px;
-  }
-
-  .carousel-track {
-    padding: 0 20px;
-  }
-}
 </style>
 
 
@@ -1098,6 +1143,232 @@ Mon-Sat: 9:00am – 8pm
 </footer>
 
 
+
+
+
+
+
+
+
+ <!-- media -->
+
+ <style>
+
+
+
+
+
+
+
+
+
+
+
+  @media (max-width: 1050px) {
+
+
+    .hero-flx {
+      height: 40vh;
+    }
+
+    .banner-section {
+      padding: 30px 0px;
+    }
+
+      .about-us-parent{
+        margin-top: 37px;
+      }
+
+      .ceo-heading h3 {
+        font-size: 35px;
+      }
+
+  
+      .team-card {
+    flex: 0 0 270px;
+    width: 270px;
+  }
+
+
+
+    
+  }
+
+
+
+
+
+
+  @media (max-width: 992px) {
+
+    .hero-heading h2 {
+      font-size: 70px;
+    }
+    .hero-flx {
+      padding-bottom: 80px;
+    }
+
+    .ceo-left {
+      padding: 30px;
+    }
+
+
+
+  }
+
+
+
+
+  @media (max-width: 720px) {
+
+  .team-card {
+    flex: 0 0 260px;
+    width: 260px;
+    height: 380px;
+  }
+
+
+
+  /* .carousel-track {
+    padding: 0 28px;
+  } */
+}
+
+  @media (max-width: 576px) {
+      .hero-heading h2 {
+                font-size: 50px;
+
+      }
+          .hero-flx {
+                    padding-bottom: 55px;
+
+          }
+              .hero-flx {
+                height: 52vh;
+              }
+
+                 .banner-section {
+      padding: 20px 0px;
+    }
+
+      .about-us-parent{
+        margin-top: 27px;
+      }
+      .ceo {
+        flex-direction: column-reverse;
+      }
+      .ceo-left {
+        width: 100%;
+      }
+      .ceo-right {
+        width: 100%;
+      }
+         .carousel-viewport {
+            padding: 45px 0px;
+          }
+          .card-name {
+            font-size: 25px;
+          }
+          .card-body {
+            padding: 20px;
+          }
+
+          .about-us-parent {
+            margin-bottom: 90px;
+          }
+
+          .team-section {
+            margin-top: 90px;
+            margin-bottom: 125px;
+          }
+
+
+
+
+      
+        
+
+
+
+
+
+
+  }
+
+    @media (max-width: 480px) {
+
+      
+              .ceo-heading h3 {
+                font-size: 24px;
+              }
+                  .ceo-left {
+            padding: 15px;
+          }
+
+          .ceo-second-para {
+            margin-top: 6px;
+          }
+              .card-name {
+                font-size: 20px;
+              }
+                  .card-body {
+                    padding: 15px;
+                  }
+                  .card-socials {
+                    margin-top: 10px;
+                  }
+                .ctrl-btn {
+    width: 30px;
+    height: 30px;
+                }
+                .carousel-controls {
+                  margin-right: 10px;
+
+                  gap: 10px;
+                }
+                .ctrl-btn svg {
+                  height: 14px;
+                  width: 14px;
+                }
+
+
+                  .team-card {
+    flex: 0 0 230px;
+    width: 230px;
+    height: 340px;
+  }
+
+  /* .carousel-track {
+    padding: 0 20px;
+  } */
+
+
+
+
+
+
+       
+
+
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+ </style>
+
+
+  
 
 
 
